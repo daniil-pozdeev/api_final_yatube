@@ -7,10 +7,13 @@ User = get_user_model()
 class Group(models.Model):
     """
     Модель для представления группы.
-    Хранит информацию о названии группы, ее уникальном идентификаторе и описании
+    Хранит информацию о названии группы,
+    ее уникальном идентификаторе и описании
     """
-    title = models.CharField(max_length=200)  # Название группы, максимальная длина 200 символов
-    slug = models.SlugField(unique=True)  # Уникальный идентификатор для группы, используется в URL
+    # Название группы, максимальная длина 200 символов
+    title = models.CharField(max_length=200)  
+    # Уникальный идентификатор для группы, используется в URL
+    slug = models.SlugField(unique=True)  
     description = models.TextField()  # Описание группы
 
     def __str__(self):
@@ -53,20 +56,25 @@ class Follow(models.Model):
     """
     user = models.ForeignKey(
         User,
-        related_name='following',  # Имя обратной связи для получения пользователей, на которых подписан текущий пользователь
-        on_delete=models.CASCADE  # Удаляем подписки, если пользователь удален
+        related_name='following', 
+        # Удаляем подписки, если пользователь удален 
+        on_delete=models.CASCADE  
     )
     following = models.ForeignKey(
         User,
-        related_name='followers',  # Имя обратной связи для получения подписчиков текущего пользователя
-        on_delete=models.CASCADE  # Удаляем подписки, если пользователь удален
+        # Имя обратной связи для получения подписчиков текущего пользователя
+        related_name='followers', 
+        # Удаляем подписки, если пользователь удален 
+        on_delete=models.CASCADE  
     )
 
     class Meta:
-        unique_together = ('user', 'following')  # Обеспечиваем уникальность пары (пользователь, на которого подписан)
+        # Обеспечиваем уникальность пары (пользователь, на которого подписан)
+        unique_together = ('user', 'following')  
 
     def __str__(self):
         """
         Возвращает строковое представление объекта Follow.
         """
-        return f"{self.user.username} follows {self.following.username}"  # Форматируем строку для удобства чтения
+        # Форматируем строку для удобства чтения
+        return f"{self.user.username} follows {self.following.username}"  

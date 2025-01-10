@@ -10,8 +10,11 @@ class PostPagination(LimitOffsetPagination):
     
     def get_paginated_response(self, data):
         return Response({
-            'count': self.count,  # Общее количество объектов
-            'next': self.get_next_link(),  # Ссылка на следующую страницу, если она есть
-            'previous': self.get_previous_link(),  # Ссылка на предыдущую страницу, если она есть
+            # Общее количество объектов
+            'count': self.count,  
+            # Ссылка на следующую страницу, если она есть
+            'next': self.get_next_link(),  
+            # Ссылка на предыдущую страницу, если она есть
+            'previous': self.get_previous_link(),  
             'results': data  # Данные текущей страницы
         })

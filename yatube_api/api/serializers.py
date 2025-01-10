@@ -3,14 +3,17 @@ from posts.models import Comment, Post, Follow, Group
 
 
 class PostSerializer(serializers.ModelSerializer):
-    author = serializers.CharField(source='author.username', read_only=True)
+    author = serializers.CharField(source='author.username',
+                                   read_only=True)
     group = serializers.PrimaryKeyRelatedField(
-        queryset=Group.objects.all(), allow_null=True, required=False
+        queryset=Group.objects.all(), allow_null=True,
+        required=False
     )
 
     class Meta:
         model = Post
-        fields = ['id', 'author', 'text', 'pub_date', 'image', 'group']
+        fields = ['id', 'author', 'text', 'pub_date',
+                  'image', 'group']
         read_only_fields = ['id', 'pub_date', 'author']
 
     def to_representation(self, instance):
@@ -27,7 +30,8 @@ class CommentSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
-        fields = ['id', 'author', 'post', 'text', 'created']
+        fields = ['id', 'author', 'post',
+                  'text', 'created']
         read_only_fields = ['author', 'post']
         model = Comment
 
@@ -35,11 +39,13 @@ class CommentSerializer(serializers.ModelSerializer):
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
-        fields = ['id', 'title', 'slug', 'description']
+        fields = ['id', 'title',
+                  'slug', 'description']
 
 
 class FollowSerializer(serializers.ModelSerializer):
-    user = serializers.CharField(source='user.username', read_only=True)
+    user = serializers.CharField(source='user.username',
+                                 read_only=True)
     following = serializers.CharField(
         source='following.username', read_only=True
     )
