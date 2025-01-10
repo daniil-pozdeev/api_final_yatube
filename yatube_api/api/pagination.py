@@ -7,7 +7,6 @@ class PostPagination(LimitOffsetPagination):
     Класс для пагинации постов с использованием лимита и смещения.
     Наследуется от LimitOffsetPagination для настройки ответа.
     """
-    
     def get_paginated_response(self, data):
         return Response({
             # Общее количество объектов

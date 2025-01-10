@@ -11,22 +11,24 @@ class Group(models.Model):
     ее уникальном идентификаторе и описании
     """
     # Название группы, максимальная длина 200 символов
-    title = models.CharField(max_length=200)  
+    title = models.CharField(max_length=200)
     # Уникальный идентификатор для группы, используется в URL
-    slug = models.SlugField(unique=True)  
+    slug = models.SlugField(unique=True)
     description = models.TextField()  # Описание группы
 
     def __str__(self):
         """
         Возвращает строковое представление объекта Group.
-        Используем для отображения названия группы в админке и др. местах
+        Используем для отображения названия
+        группы в админке и др. местах
         """
         return self.title  # Возвращаем название группы
 
 
 class Post(models.Model):
     text = models.TextField()
-    pub_date = models.DateTimeField('Дата публикации', auto_now_add=True)
+    pub_date = models.DateTimeField('Дата публикации',
+                                    auto_now_add=True)
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='posts')
     image = models.ImageField(
@@ -56,25 +58,25 @@ class Follow(models.Model):
     """
     user = models.ForeignKey(
         User,
-        related_name='following', 
-        # Удаляем подписки, если пользователь удален 
-        on_delete=models.CASCADE  
+        related_name='following',
+        # Удаляем подписки, если пользователь удален
+        on_delete=models.CASCADE
     )
     following = models.ForeignKey(
         User,
         # Имя обратной связи для получения подписчиков текущего пользователя
-        related_name='followers', 
-        # Удаляем подписки, если пользователь удален 
-        on_delete=models.CASCADE  
+        related_name='followers',
+        # Удаляем подписки, если пользователь удален
+        on_delete=models.CASCADE
     )
 
     class Meta:
         # Обеспечиваем уникальность пары (пользователь, на которого подписан)
-        unique_together = ('user', 'following')  
+        unique_together = ('user', 'following')
 
     def __str__(self):
         """
         Возвращает строковое представление объекта Follow.
         """
         # Форматируем строку для удобства чтения
-        return f"{self.user.username} follows {self.following.username}"  
+        return f"{self.user.username} follows {self.following.username}"
