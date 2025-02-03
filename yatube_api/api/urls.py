@@ -28,4 +28,5 @@ urlpatterns = [
     ),
     path('jwt/verify/', views.TokenVerifyView.as_view(),
          name='token_verify'),
+    path('djoser/', include('djoser.urls')),  # Добавляем URL для Djoser
 ]

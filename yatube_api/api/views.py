@@ -5,6 +5,7 @@ from posts.models import Post, Follow, Comment, Group
 from . import serializers
 from django.contrib.auth.models import User
 from rest_framework.exceptions import NotFound
+from .permissions import IsAuthorOrReadOnly, IsFollowing
 
 
 class GroupViewSet(viewsets.ReadOnlyModelViewSet):
@@ -24,6 +25,7 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = serializers.PostSerializer
     pagination_class = PostPagination
+    permission_classes = [IsAuthorOrReadOnly]
 
     def get_permissions(self):
         if self.action in ['list', 'retrieve']:
@@ -91,6 +93,7 @@ class PostViewSet(viewsets.ModelViewSet):
 class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.CommentSerializer
     permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthorOrReadOnly]
 
     def get_permissions(self):
         if self.action in ['list', 'retrieve']:
@@ -180,7 +183,8 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 class FollowViewSet(viewsets.GenericViewSet):
     serializer_class = serializers.FollowSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    # Объединяем permission_classes в один список
+    permission_classes = [permissions.IsAuthenticated, IsFollowing]  # Изменено
 
     def get_queryset(self):
         return Follow.objects.filter(user=self.request.user)
@@ -234,3 +238,4 @@ class FollowViewSet(viewsets.GenericViewSet):
             },
             status=status.HTTP_201_CREATED
         )
+# Удалены ненужные методы (retrieve, partial_update, destroy) для соответствия требованиям
